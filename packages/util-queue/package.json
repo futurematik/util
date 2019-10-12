@@ -1,6 +1,6 @@
 {
   "name": "@fmtk/util-queue",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "main": "lib/bundle.js",
   "module": "lib/bundle.mjs",
   "types": "lib/index.d.ts",
@@ -20,6 +20,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@fmtk/util-deferred": "^0.0.0"
+    "@fmtk/util-deferred": "^0.1.0"
   }
 }
