@@ -19,7 +19,7 @@
   "files": [
     "src/",
     "lib/",
-    "!__tests__/",
+    "!**/__tests__/",
     "!*.test.*"
   ],
   "publishConfig": {

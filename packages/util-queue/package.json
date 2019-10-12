@@ -16,6 +16,12 @@
     "test": "jest",
     "watch": "yarn run compile -w"
   },
+  "files": [
+    "src/",
+    "lib/",
+    "!**/__tests__/",
+    "!*.test.*"
+  ],
   "publishConfig": {
     "access": "public"
   },

@@ -15,6 +15,12 @@
     "lint": "eslint src/ --ext=ts,tsx",
     "watch": "yarn run compile -w"
   },
+  "files": [
+    "src/",
+    "lib/",
+    "!**/__tests__/",
+    "!*.test.*"
+  ],
   "publishConfig": {
     "access": "public"
   }
