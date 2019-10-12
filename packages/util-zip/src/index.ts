@@ -4,7 +4,7 @@ import { Readable } from 'stream';
 
 export interface ZipEntry {
   path: string;
-  open(): AsyncIterableIterator<Buffer>;
+  open(): PromiseLike<Readable>;
 }
 
 export async function* readZip(
@@ -59,8 +59,8 @@ function baseOpen(zipPath: string): Promise<yauzl.ZipFile> {
 }
 
 function makeOpenEntry(zip: yauzl.ZipFile, entry: yauzl.Entry) {
-  return async function* openEntry(): AsyncIterableIterator<Buffer> {
-    const file = await new Promise<Readable>((resolve, reject) => {
+  return async function openEntry(): Promise<Readable> {
+    return await new Promise<Readable>((resolve, reject) => {
       zip.openReadStream(entry, (err, stream) => {
         if (err) {
           return reject(err);
@@ -71,31 +71,35 @@ function makeOpenEntry(zip: yauzl.ZipFile, entry: yauzl.Entry) {
         resolve(stream);
       });
     });
+  };
+}
 
-    const iterator = file[Symbol.asyncIterator]();
-    let result: IteratorResult<unknown> | undefined;
-    let error: { error: unknown } | undefined;
+export async function* toAsyncIterable(
+  file: Readable,
+): AsyncIterableIterator<Buffer> {
+  const iterator = file[Symbol.asyncIterator]();
+  let result: IteratorResult<unknown> | undefined;
+  let error: { error: unknown } | undefined;
 
-    // following code works round bug in yauzl's stream implementation
-    // see #110 there (https://github.com/thejoshwolfe/yauzl/issues/110)
+  // following code works round bug in yauzl's stream implementation
+  // see #110 there (https://github.com/thejoshwolfe/yauzl/issues/110)
+  try {
+    for (; (result = await iterator.next()), !result.done; ) {
+      yield result.value as Buffer;
+    }
+  } catch (e) {
+    error = { error: e };
+  } finally {
     try {
-      for (; (result = await iterator.next()), !result.done; ) {
-        yield result.value as Buffer;
+      if (result && !result.done && iterator.return) {
+        // don't await this because it won't ever return due to bug
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        iterator.return();
       }
-    } catch (e) {
-      error = { error: e };
     } finally {
-      try {
-        if (result && !result.done && iterator.return) {
-          // don't await this because it won't ever return due to bug
-          // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          iterator.return();
-        }
-      } finally {
-        if (error) {
-          throw error.error;
-        }
+      if (error) {
+        throw error.error;
       }
     }
-  };
+  }
 }
