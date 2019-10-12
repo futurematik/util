@@ -1,6 +1,6 @@
 {
   "name": "@fmtk/util-zip",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "lib/bundle.js",
   "module": "lib/bundle.mjs",
   "types": "lib/index.d.ts",
@@ -26,7 +26,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@fmtk/util-queue": "^0.1.0",
+    "@fmtk/util-queue": "^0.1.1",
     "yauzl": "^2.10.0"
   },
   "devDependencies": {
