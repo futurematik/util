@@ -1,0 +1,35 @@
+{
+  "name": "@fmtk/util-zip",
+  "version": "0.0.0",
+  "main": "lib/bundle.js",
+  "module": "lib/bundle.mjs",
+  "types": "lib/index.d.ts",
+  "author": "Gordon Leigh <gordon.leigh@futurematik.co.uk>",
+  "repository": "https://github.com/futurematik/util",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "yarn clean && yarn lint && yarn test && yarn compile",
+    "compile": "rollup -c",
+    "clean": "rm -rf lib/",
+    "lint": "eslint src/ --ext=ts,tsx",
+    "test": "jest",
+    "watch": "yarn run compile -w"
+  },
+  "files": [
+    "src/",
+    "lib/",
+    "!__tests__/",
+    "!*.test.*"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@fmtk/util-queue": "^0.0.0",
+    "yauzl": "^2.10.0"
+  },
+  "devDependencies": {
+    "@types/yauzl": "^2.9.1"
+  }
+}

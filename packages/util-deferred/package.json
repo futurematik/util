@@ -1,0 +1,21 @@
+{
+  "name": "@fmtk/util-deferred",
+  "version": "0.0.0",
+  "main": "lib/bundle.js",
+  "module": "lib/bundle.mjs",
+  "types": "lib/index.d.ts",
+  "author": "Gordon Leigh <gordon.leigh@futurematik.co.uk>",
+  "repository": "https://github.com/futurematik/util",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "yarn clean && yarn lint && yarn compile",
+    "compile": "rollup -c",
+    "clean": "rm -rf lib/",
+    "lint": "eslint src/ --ext=ts,tsx",
+    "watch": "yarn run compile -w"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
