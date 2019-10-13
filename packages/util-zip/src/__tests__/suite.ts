@@ -1,6 +1,6 @@
 import 'jest';
 import path from 'path';
-import { readZip, toAsyncIterable } from '../';
+import { readZip } from '../';
 
 describe('ZipFile', () => {
   it('reads a zip file correctly', async () => {

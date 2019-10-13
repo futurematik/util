@@ -4,8 +4,12 @@ import { Readable } from 'stream';
 import { EchoStream } from './stream';
 
 export interface ZipEntry {
+  comment: string;
+  compressedSize: number;
+  lastModified: Date;
   path: string;
   open(): PromiseLike<Readable>;
+  uncompressedSize: number;
 }
 
 export async function* readZip(
@@ -29,8 +33,12 @@ export async function* readZip(
 
     for await (const entry of entries) {
       yield {
+        comment: entry.comment,
+        compressedSize: entry.compressedSize,
+        lastModified: entry.getLastModDate(),
         path: entry.fileName,
         open: makeOpenEntry(zipFile, entry),
+        uncompressedSize: entry.uncompressedSize,
       };
     }
   } finally {
